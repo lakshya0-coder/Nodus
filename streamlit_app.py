@@ -40,6 +40,26 @@ with st.spinner("Starting Nodus Cafe Backend & Tunneling..."):
 
 if public_url:
     st.success(f"Backend running at: {public_url}")
+    
+    # SQLite Database Integration for Streamlit Backend
+    with st.expander("🛠️ SQLite Database Viewer (Streamlit Backend)"):
+        import sqlite3
+        import pandas as pd
+        
+        db_path = os.path.join("instance", "nodus_cafe.db")
+        if os.path.exists(db_path):
+            conn = sqlite3.connect(db_path)
+            tables = pd.read_sql_query("SELECT name FROM sqlite_master WHERE type='table';", conn)
+            
+            if not tables.empty:
+                selected_table = st.selectbox("Select Table to View:", tables['name'])
+                if selected_table:
+                    df = pd.read_sql_query(f"SELECT * FROM {selected_table} LIMIT 100", conn)
+                    st.dataframe(df, use_container_width=True)
+            conn.close()
+        else:
+            st.warning("SQLite DB not found yet. Flask is probably still initializing it.")
+
     # Embed the original app
     st.components.v1.iframe(public_url, width=1200, height=800, scrolling=True)
 else:

@@ -1,0 +1,43 @@
+EXECUTION & WORKFLOW — NODUS CAFE
+
+1. Environment Setup
+Install the required packages from requirements.txt:
+`pip install -r requirements.txt`
+
+2. Database Initialization
+Seed the initial data (users, menu items, mock bookings) into the SQLite DB:
+`python seed_data.py`
+This generates `instance/nodus_cafe.db`.
+
+3. Launch Application
+Fire up the backend:
+`python run.py`
+Listens locally at http://localhost:5000.
+
+4. Public Frontend Workflow
+- Home: Standard landing page.
+- Menu: Bilingual browsing (EN/HI).
+- Booking: Slot reservations integrated with ML demand heatmaps.
+- AI Chat: Gemini-powered recommendations.
+
+5. Admin Panel Workflow
+- URL: /admin
+- Default creds: admin / admin123
+- Capabilities: Order tracking, booking management, menu CRUD, AI conversation logs, staff roles.
+- ML Dashboard: View demand forecast and trigger model retraining.
+
+6. ML/AI Integration
+- ML Retraining: Auto-runs weekly via APScheduler.
+- AI Assistant: Requires GEMINI_API_KEY injected into DB via Admin Settings. Falls back to dumb keyword matching if API is missing or fails.
+
+7. Streamlit Cloud Deployment
+- The `streamlit_app.py` acts as a wrapper.
+- It spawns `run.py` (Flask) in a subprocess.
+- It sets up `localtunnel` to expose the Flask port (5000) to the public internet.
+- Streamlit then embeds the public localtunnel URL via an iframe.
+- Required `packages.txt`: `nodejs` and `npm` (for `npx localtunnel`).
+
+8. Troubleshooting
+- Localtunnel failed to start: Check if nodejs is installed. Sometimes public endpoints get stuck; restart the Streamlit app.
+- DB not found: Run `seed_data.py` manually or wait for Flask app initialization.
+- Iframe not loading: Browsers might block mixed content or certain cross-origin iframes. Ensure HTTPS across the board.

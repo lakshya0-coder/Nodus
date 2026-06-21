@@ -1,0 +1,28 @@
+DATABASE ARCHITECTURE — NODUS CAFE
+
+Tech stack: SQLite + SQLAlchemy ORM.
+Storage: Everything is dumped into a single local file at `instance/nodus_cafe.db`.
+
+Tables & Mechanics:
+- User (user.py): Roles (admin/staff), auth credentials.
+- Menu (menu.py): Categories, items, bilingual translations (EN/HI).
+- Order (order.py): State machine for tracking statuses (received -> preparing -> ready -> completed).
+- Booking (booking.py): Slot-based reservations tied to ML demand predictions.
+- Conversation (conversation.py): Logs Gemini AI chats for analytics and feedback.
+- Setting (setting.py): Config values (API keys, cafe hours, capacity).
+- Prediction (prediction.py): Keeps track of the Gradient Boosting ML model versions and history.
+
+How it works:
+It's a standard relational DB layout mapped through Python classes. Data is read/written via SQLAlchemy sessions in `app/routes/` and `app/services/`. Simple, flat file execution, no heavy external daemons needed.
+
+Streamlit Integration:
+- `streamlit_app.py` provides a built-in SQLite viewer.
+- Uses `pandas` to run raw SQL (`SELECT * FROM {table}`) directly against `instance/nodus_cafe.db`.
+- Allows admins to monitor DB state without accessing the Flask admin panel.
+
+Backups & Migration:
+- Since it's SQLite, backing up the DB is as simple as copying `instance/nodus_cafe.db`.
+- Schema changes require Flask-Migrate (Alembic) if deployed, or dropping/recreating tables for local dev (since it's an MVP structure).
+
+Concurrency limitations:
+SQLite locks the entire database for writes. Given the cafe's expected traffic, this is acceptable. If write bottlenecks occur (e.g., mass AI log writing), consider switching to PostgreSQL or using SQLAlchemy's async engine in the future.

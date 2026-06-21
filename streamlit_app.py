@@ -11,7 +11,6 @@ st.set_page_config(page_title="Nodus Cafe", layout="wide")
 @st.cache_resource
 def start_server_and_tunnel():
     # Start Flask server
-    os.environ["WERKZEUG_RUN_MAIN"] = "true"
     flask_process = subprocess.Popen(["python", "run.py"])
     
     # Wait for Flask to start

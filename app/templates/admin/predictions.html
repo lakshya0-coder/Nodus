@@ -1,0 +1,52 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Demand Forecast & ML Model{% endblock %}
+
+{% block admin_content %}
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="text-muted">Active Model Version</div>
+        <div class="stat-val" id="activeModelVer">Loading...</div>
+    </div>
+    <div class="stat-card" style="border-left-color: var(--warning);">
+        <div class="text-muted">Last Trained</div>
+        <div class="stat-val" id="lastTrained" style="font-size: 1.2rem; padding-top:10px;">Loading...</div>
+    </div>
+    <div class="stat-card" style="border-left-color: var(--success);">
+        <div class="text-muted">Scheduler Status</div>
+        <div class="stat-val" id="schedulerStatus" style="font-size: 1.2rem; padding-top:10px;">Loading...</div>
+    </div>
+</div>
+
+<div class="card p-4 mb-4">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 class="text-gold">Manual Actions</h3>
+    </div>
+    <div style="display: flex; gap: 1rem;">
+        <button id="btnRetrain" class="btn btn-primary">Retrain Model Now</button>
+        <button id="btnGenerate" class="btn btn-secondary">Regenerate Predictions for Next 7 Days</button>
+    </div>
+    <div id="mlLog" class="mt-3 text-muted text-sm" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 4px; min-height: 50px;">
+        Ready.
+    </div>
+</div>
+
+<div class="card p-4">
+    <h3 class="text-gold mb-3">Model Version History</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Version</th>
+                <th>Trained At</th>
+                <th>Data Points</th>
+                <th>MAE</th>
+                <th>RMSE</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="modelsList">
+            <tr><td colspan="6" class="text-center text-muted">Loading models...</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

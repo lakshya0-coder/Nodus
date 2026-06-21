@@ -1,0 +1,46 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}AI Conversation Logs{% endblock %}
+
+{% block admin_content %}
+<div class="card p-4">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div class="filters">
+            <select id="langFilter" class="form-control" style="width: 200px; display: inline-block;">
+                <option value="">All Languages</option>
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+            </select>
+            <input type="text" id="searchFilter" class="form-control" placeholder="Search conversations..." style="width: 250px; display: inline-block; margin-left: 1rem;">
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Session ID</th>
+                <th>Language</th>
+                <th>Started At</th>
+                <th>Messages</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="conversationsList">
+            <tr><td colspan="5" class="text-center text-muted">Loading conversations...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Conversation Detail Modal -->
+<div id="convModal" class="hidden" style="position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; display:flex; align-items:center; justify-content:center;">
+    <div class="card p-4" style="width: 600px; max-width: 95%; max-height: 90vh; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <h3>Conversation Details</h3>
+            <button onclick="document.getElementById('convModal').style.display='none'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+        </div>
+        <div id="convMessages" style="flex:1; overflow-y:auto; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 4px;">
+            <!-- Messages populated via JS -->
+        </div>
+    </div>
+</div>
+{% endblock %}

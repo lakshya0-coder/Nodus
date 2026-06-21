@@ -1,0 +1,44 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Settings{% endblock %}
+
+{% block admin_content %}
+<div class="card p-4 mb-4">
+    <h3 class="text-gold mb-3">Cafe Settings</h3>
+    <form>
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label class="form-label">Cafe Name</label>
+                <input type="text" class="form-control" value="Nodus Cafe">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Total Seating Capacity</label>
+                <input type="number" class="form-control" value="30">
+            </div>
+        </div>
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label class="form-label">Opening Hour (24H)</label>
+                <input type="number" class="form-control" value="8">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Closing Hour (24H)</label>
+                <input type="number" class="form-control" value="22">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Settings</button>
+    </form>
+</div>
+
+<div class="card p-4">
+    <h3 class="text-gold mb-3">AI Configuration</h3>
+    <form>
+        <div class="form-group">
+            <label class="form-label">Google Gemini API Key</label>
+            <input type="password" class="form-control" placeholder="AI-1234567890abcdef...">
+            <small class="text-muted" style="display:block; margin-top:5px;">Required for dynamic AI chat. Without this, fallback keyword responses are used.</small>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save API Key</button>
+    </form>
+</div>
+{% endblock %}

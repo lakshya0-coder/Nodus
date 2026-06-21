@@ -1,0 +1,39 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Bookings Management{% endblock %}
+
+{% block admin_content %}
+<div class="card p-4">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div class="filters">
+            <input type="date" id="bookingDateFilter" class="form-control" style="width: 200px; display: inline-block;" value="{{ today }}">
+            <select id="bookingStatusFilter" class="form-control" style="width: 200px; display: inline-block; margin-left: 1rem;">
+                <option value="">All Statuses</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="no_show">No Show</option>
+            </select>
+        </div>
+        <button class="btn btn-primary">+ New Booking</button>
+    </div>
+
+    <table class="table" id="bookingsTable">
+        <thead>
+            <tr>
+                <th>Ref</th>
+                <th>Time Slot</th>
+                <th>Customer Name</th>
+                <th>Guests</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="bookingsList">
+            <!-- Loaded via JS -->
+            <tr><td colspan="6" class="text-center text-muted">Loading bookings...</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

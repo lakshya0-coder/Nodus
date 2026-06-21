@@ -1,0 +1,33 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Menu Management{% endblock %}
+
+{% block admin_content %}
+<div class="card p-4">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div class="tabs">
+            <button class="btn btn-primary" id="tabItems">Menu Items</button>
+            <button class="btn btn-secondary" id="tabCategories">Categories</button>
+        </div>
+        <button class="btn btn-primary" onclick="openNewItemModal()">+ Add Item</button>
+    </div>
+
+    <div id="itemsView">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Img</th>
+                    <th>Name (EN)</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="menuItemsList">
+                <tr><td colspan="6" class="text-center text-muted">Loading items...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

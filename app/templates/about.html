@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}About Us | Nodus Cafe{% endblock %}
+
+{% block content %}
+<div style="padding-top: 100px;"></div>
+
+<section class="about-hero text-center gsap-reveal">
+    <h1 class="section-title text-gold" data-i18n="nav.about">Our Story</h1>
+    <p class="section-subtitle">Crafting the perfect cup, one node at a time.</p>
+    <div style="max-width: 800px; margin: 0 auto; text-align: left; padding: 2rem; background: var(--bg-card); border-radius: var(--radius-md);">
+        <p class="mb-3">Founded with a passion for exceptional coffee and a vision for community connection, Nodus Cafe is more than just a coffee shop. "Nodus" means a connecting point or node, and that's exactly what we aim to be in your daily life.</p>
+        <p>We source our beans from sustainable farms across the globe, roasting them with precision to highlight their unique flavor profiles. Whether you're here for a quick morning espresso, a focused work session, or a relaxed evening with friends, our space is designed to adapt to your needs.</p>
+    </div>
+</section>
+
+<section class="values-section">
+    <div class="values-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+        <div class="card text-center" style="padding: 2rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🌱</div>
+            <h3>Sustainability</h3>
+            <p class="text-muted text-sm mt-2">Ethically sourced beans and eco-friendly packaging.</p>
+        </div>
+        <div class="card text-center" style="padding: 2rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🤝</div>
+            <h3>Community</h3>
+            <p class="text-muted text-sm mt-2">A welcoming space for everyone to connect.</p>
+        </div>
+        <div class="card text-center" style="padding: 2rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+            <h3>Quality</h3>
+            <p class="text-muted text-sm mt-2">No compromises on taste, ever.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

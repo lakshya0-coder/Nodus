@@ -1,0 +1,44 @@
+/* Admin Specific Styles */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.p-4 { padding: 2rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mt-3 { margin-top: 1.5rem; }
+.w-100 { width: 100%; }
+
+.form-group { margin-bottom: 1rem; }
+.form-label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    color: white;
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.hidden { display: none; }
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.badge-received { background: #3b82f6; color: white; }
+.badge-preparing { background: #eab308; color: black; }
+.badge-ready { background: #22c55e; color: white; }
+.badge-completed { background: #6b7280; color: white; }
+.badge-cancelled { background: #ef4444; color: white; }
+
+.badge-confirmed { background: #22c55e; color: white; }
+.badge-pending { background: #eab308; color: black; }
+.badge-no_show { background: #f97316; color: white; }

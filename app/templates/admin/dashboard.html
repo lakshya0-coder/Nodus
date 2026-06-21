@@ -1,0 +1,70 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Dashboard{% endblock %}
+
+{% block admin_content %}
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="text-muted">Today's Bookings</div>
+        <div class="stat-val">{{ todays_bookings }}</div>
+    </div>
+    <div class="stat-card" style="border-left-color: var(--accent-secondary);">
+        <div class="text-muted">Today's Orders</div>
+        <div class="stat-val">{{ todays_orders }}</div>
+    </div>
+    <div class="stat-card" style="border-left-color: var(--success);">
+        <div class="text-muted">AI Queries</div>
+        <div class="stat-val">24</div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div>
+        <h3 class="mb-3 text-gold">Recent Orders</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Ref</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in recent_orders %}
+                <tr>
+                    <td>{{ order.order_ref }}</td>
+                    <td><span class="badge badge-{{ order.status }}">{{ order.status }}</span></td>
+                    <td>₹{{ order.total_amount }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3" class="text-muted text-center">No recent orders</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div>
+        <h3 class="mb-3 text-gold">Upcoming Bookings</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date / Time</th>
+                    <th>Customer</th>
+                    <th>Guests</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in upcoming_bookings %}
+                <tr>
+                    <td>{{ booking.date.strftime('%b %d') }} at {{ booking.time_slot.split('-')[0] }}</td>
+                    <td>{{ booking.customer_name }}</td>
+                    <td>{{ booking.guest_count }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3" class="text-muted text-center">No upcoming bookings</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

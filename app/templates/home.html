@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Nodus Cafe | Modern Coffee Experience{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Global Noise Texture -->
+<div class="noise-overlay"></div>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 data-i18n="home.hero_title">{{ _('home.hero_title') }}</h1>
+        <p class="hero-subtitle" data-i18n="home.hero_subtitle">{{ _('home.hero_subtitle') }}</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('menu_page.menu') }}" class="btn btn-primary" data-i18n="nav.menu">{{ _('nav.menu') }}</a>
+            <a href="{{ url_for('booking_page.booking') }}" class="btn btn-secondary" data-i18n="nav.booking">{{ _('nav.booking') }}</a>
+        </div>
+    </div>
+</section>
+
+<!-- Infinite Marquee -->
+<div class="marquee-container">
+    <div class="marquee-track">
+        <span>✦ ARTISAN CRAFTED</span>
+        <span>✦ LOCALLY ROASTED</span>
+        <span>✦ AI POWERED</span>
+        <span>✦ SUSTAINABLY SOURCED</span>
+        <span>✦ ARTISAN CRAFTED</span>
+        <span>✦ LOCALLY ROASTED</span>
+        <span>✦ AI POWERED</span>
+        <span>✦ SUSTAINABLY SOURCED</span>
+    </div>
+</div>
+
+<!-- Our Craft / Philosophy Section -->
+<section class="craft-section">
+    <div class="craft-grid">
+        <div class="craft-image gsap-reveal">
+            <img src="{{ url_for('static', filename='images/craft_barista.png') }}" alt="Artisan Barista Crafting Coffee">
+        </div>
+        <div class="craft-content gsap-reveal">
+            <h2 class="editorial-heading">The Pursuit of<br><span class="text-accent">Perfection</span></h2>
+            <p class="editorial-body">Every cup we serve is a testament to our dedication to the craft. From ethically sourcing the finest single-origin beans to the precise science of our espresso extraction, we believe coffee is both an art and a ritual.</p>
+            <p class="editorial-body">Experience the uncompromising quality of Nodus Cafe, where tradition meets modern innovation.</p>
+            <a href="{{ url_for('public.about') }}" class="btn btn-secondary mt-3">Discover Our Story</a>
+        </div>
+    </div>
+</section>
+
+<!-- Signature Collection -->
+<section class="featured-section">
+    <h2 class="section-title gsap-reveal text-center" data-i18n="home.featured_title">{{ _('home.featured_title') }}</h2>
+    <p class="section-subtitle gsap-reveal text-center" data-i18n="home.featured_subtitle">{{ _('home.featured_subtitle') }}</p>
+    
+    <div class="carousel-container gsap-reveal">
+        <div class="carousel-track">
+            {% for item in featured_items %}
+            <div class="menu-card card">
+                <div class="card-img-placeholder" style="background: linear-gradient(45deg, #2a2420, #3a322c);">
+                    {% if item.image_path %}
+                        <img src="{{ url_for('static', filename=item.image_path) }}" alt="{{ item.name }}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/default_item.png') }}" alt="{{ item.name }}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h3>{{ item.name }}</h3>
+                    <p class="text-muted">{{ item.description[:60] }}...</p>
+                    <div class="card-footer">
+                        <span class="price">₹{{ item.price }}</span>
+                        {% for tag in item.tags %}
+                            {% if loop.index <= 1 %}
+                                <span class="badge badge-{{ tag|lower }}">{{ tag }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- AI Teaser -->
+<section class="ai-teaser">
+    <div class="ai-teaser-grid">
+        <div class="ai-teaser-text gsap-reveal">
+            <h2 data-i18n="home.ai_teaser_title">{{ _('home.ai_teaser_title') }}</h2>
+            <p data-i18n="home.ai_teaser_subtitle">{{ _('home.ai_teaser_subtitle') }}</p>
+            <div class="tech-specs mt-3">
+                <span class="spec-badge">Personalized Recommendations</span>
+                <span class="spec-badge">Smart Seat Booking</span>
+                <span class="spec-badge">Real-time Demand Sensing</span>
+            </div>
+            <button onclick="document.getElementById('chat-toggle').click()" class="btn btn-primary" style="margin-top: 2rem;">
+                Experience Nodus AI
+            </button>
+        </div>
+        <div class="ai-teaser-visual gsap-reveal">
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="mock-chat">
+                        <div class="mock-msg user">Suggest something cold and sweet</div>
+                        <div class="mock-msg ai">Based on your past orders, I recommend our Iced Caramel Macchiato. Shall I reserve your usual window seat as well?</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glow-orb"></div>
+        </div>
+    </div>
+</section>
+<!-- Atmosphere Gallery -->
+<section class="atmosphere-section">
+    <div class="atmosphere-grid">
+        <div class="atm-item large gsap-reveal">
+            <img src="{{ url_for('static', filename='images/cafe_interior.png') }}" alt="Cafe Interior">
+            <div class="atm-overlay">
+                <h3>The Ambience</h3>
+            </div>
+        </div>
+        <div class="atm-item gsap-reveal">
+            <img src="{{ url_for('static', filename='images/coffee_art.png') }}" alt="Barista Crafting Latte Art">
+            <div class="atm-overlay">
+                <h3>The Art</h3>
+            </div>
+        </div>
+        <div class="atm-item gsap-reveal">
+            <img src="{{ url_for('static', filename='images/beans_macro.png') }}" alt="Premium Roasted Beans">
+            <div class="atm-overlay">
+                <h3>The Bean</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials-section">
+    <h2 class="section-title gsap-reveal text-center" data-i18n="home.testimonials_title">Guest Experiences</h2>
+    <div class="testimonials-grid gsap-reveal">
+        {% for test in testimonials %}
+        <div class="testimonial-card card">
+            <div class="stars">★★★★★</div>
+            <p>"{{ test.text }}"</p>
+            <h4>— {{ test.name }}</h4>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

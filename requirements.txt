@@ -1,0 +1,17 @@
+# Nodus Cafe - Dependencies
+Flask==3.1.1
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+Flask-WTF==1.2.2
+Werkzeug==3.1.3
+
+# AI Assistant
+google-generativeai==0.8.5
+
+# ML Pipeline
+apscheduler==3.10.4
+
+
+
+# Utilities
+python-dotenv==1.1.0

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Seat | Nodus Cafe{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/booking.css') }}">
+{% endblock %}
+
+{% block content %}
+<div style="padding-top: 100px;"></div>
+
+<section class="booking-section">
+    <div class="booking-container">
+        
+        <div class="booking-form-area card gsap-reveal">
+            <h1 class="section-title text-center" style="font-size: 2rem;">Book Your Table</h1>
+            
+            <!-- Success State (Hidden initially) -->
+            <div id="bookingSuccess" class="text-center hidden" style="padding: 2rem;">
+                <h2 class="text-gold">Booking Confirmed! ✅</h2>
+                <p>Ref: <strong id="successRef"></strong></p>
+                <p class="text-muted mt-2">We've saved a spot for you.</p>
+                <button class="btn btn-primary mt-3" onclick="location.reload()">Book Another</button>
+            </div>
+
+            <!-- Booking Form -->
+            <form id="bookingForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" id="bookingDate" class="form-control" required min="{{ current_date }}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Guests</label>
+                        <select id="guestCount" class="form-control" required>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4 People</option>
+                            <option value="5">5 People</option>
+                            <option value="6">6+ People</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Time Slot</label>
+                    <div id="timeSlotsGrid" class="time-slots-grid text-center">
+                        <p class="text-muted" style="grid-column: 1/-1;">Please select a date first.</p>
+                    </div>
+                    <input type="hidden" id="selectedSlot" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="customerName" class="form-control" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" id="customerPhone" class="form-control" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Seating Preference</label>
+                    <div class="preference-options">
+                        <label><input type="radio" name="seating" value="any" checked> Any</label>
+                        <label><input type="radio" name="seating" value="indoor"> Indoor</label>
+                        <label><input type="radio" name="seating" value="outdoor"> Outdoor</label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Confirm Booking</button>
+            </form>
+        </div>
+
+        <div class="booking-info-area gsap-reveal">
+            <div class="info-card card">
+                <h3>Demand Forecast 📈</h3>
+                <p class="text-muted text-sm mb-3">Our AI predicts how busy the cafe will be to help you plan your visit.</p>
+                <ul class="legend-list">
+                    <li><span class="dot quiet"></span> Quiet (Lots of tables available)</li>
+                    <li><span class="dot moderate"></span> Moderate (Good time to visit)</li>
+                    <li><span class="dot busy"></span> Busy (Booking recommended)</li>
+                    <li><span class="dot full"></span> Full (No tables available)</li>
+                </ul>
+            </div>
+
+            <div class="info-card card mt-3">
+                <h3>Booking Policy</h3>
+                <ul class="text-muted text-sm policy-list">
+                    <li>Tables are held for 15 minutes past the reservation time.</li>
+                    <li>Maximum stay during busy hours is 2 hours.</li>
+                    <li>For groups larger than 6, please call us directly.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Inject initial data -->
+<script>
+    const TODAY_ISO = new Date().toISOString().split('T')[0];
+    document.getElementById('bookingDate').setAttribute('min', TODAY_ISO);
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+{% endblock %}

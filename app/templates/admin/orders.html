@@ -1,0 +1,63 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Orders Management{% endblock %}
+
+{% block admin_content %}
+<div class="card p-4">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div class="filters">
+            <select id="statusFilter" class="form-control" style="width: 200px; display: inline-block;">
+                <option value="">All Statuses</option>
+                <option value="received">Received</option>
+                <option value="preparing">Preparing</option>
+                <option value="ready">Ready</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+            <input type="date" id="dateFilter" class="form-control" style="width: 200px; display: inline-block; margin-left: 1rem;">
+        </div>
+        <button class="btn btn-primary" onclick="openNewOrderModal()">+ New Order</button>
+    </div>
+
+    <table class="table" id="ordersTable">
+        <thead>
+            <tr>
+                <th>Order Ref</th>
+                <th>Time</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total (₹)</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="ordersList">
+            <!-- Loaded via JS -->
+            <tr><td colspan="7" class="text-center text-muted">Loading orders...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- New Order Modal (Simplified) -->
+<div id="orderModal" class="modal hidden" style="position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; display:flex; align-items:center; justify-content:center;">
+    <div class="card p-4" style="width: 500px; max-width: 90%;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <h3>Create Order</h3>
+            <button onclick="document.getElementById('orderModal').style.display='none'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+        </div>
+        <form id="newOrderForm">
+            <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" id="orderCustomer" class="form-control" value="Walk-in">
+            </div>
+            <div class="form-group">
+                <label>Items (Hold Ctrl to select multiple)</label>
+                <select id="orderItems" class="form-control" multiple style="height: 150px;">
+                    <!-- Populated via JS -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Create Order</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

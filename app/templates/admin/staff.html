@@ -1,0 +1,40 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Staff Management{% endblock %}
+
+{% block admin_content %}
+<div class="card p-4">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h3 class="text-gold">Staff Directory</h3>
+        <button class="btn btn-primary">+ Add Staff Member</button>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cafe Owner</td>
+                <td>admin</td>
+                <td><span class="badge" style="background: purple;">Developer</span></td>
+                <td><span class="badge badge-ready">Active</span></td>
+                <td><button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button></td>
+            </tr>
+            <tr>
+                <td>Barista Raj</td>
+                <td>staff1</td>
+                <td><span class="badge" style="background: #3b82f6;">Staff</span></td>
+                <td><span class="badge badge-ready">Active</span></td>
+                <td><button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

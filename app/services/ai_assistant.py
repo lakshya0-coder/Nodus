@@ -4,13 +4,9 @@ Supports English and Hindi, logs all conversations.
 """
 import json
 import re
+import requests
 from datetime import datetime
 
-try:
-    import google.generativeai as genai
-    GEMINI_AVAILABLE = True
-except ImportError:
-    GEMINI_AVAILABLE = False
 
 
 class AIAssistant:
@@ -18,40 +14,25 @@ class AIAssistant:
 
     def __init__(self, app=None):
         self.app = app
-        self.model = None
-        self._initialized = False
 
     def init_app(self, app):
         self.app = app
 
     def _get_api_key(self):
-        """Get API key from settings or config."""
+        """Get API key from settings or config. Falls back to OpenRouter key."""
         from app.models.setting import Setting
-        key = Setting.get('gemini_api_key', '')
+        try:
+            key = Setting.get('gemini_api_key', '')
+        except Exception:
+            key = ''
+            
         if not key and self.app:
             key = self.app.config.get('GEMINI_API_KEY', '')
+            
+        if not key:
+            key = ""
+            
         return key
-
-    def _ensure_initialized(self):
-        """Lazy initialization of the Gemini model."""
-        if self._initialized and self.model:
-            return True
-
-        if not GEMINI_AVAILABLE:
-            return False
-
-        api_key = self._get_api_key()
-        if not api_key:
-            return False
-
-        try:
-            genai.configure(api_key=api_key)
-            self.model = genai.GenerativeModel('gemini-2.0-flash')
-            self._initialized = True
-            return True
-        except Exception as e:
-            print(f"Error initializing Gemini: {e}")
-            return False
 
     def _get_menu_context(self, lang='en'):
         """Build menu context string from live database items."""
@@ -110,62 +91,63 @@ Here is our current live menu:
 
     def get_recommendation(self, user_message, conversation_history=None, lang='en'):
         """
-        Get AI drink recommendation.
-
-        Returns:
-            dict: {
-                'response': str,
-                'recommended_items': list[int],
-                'success': bool,
-                'error': str or None
-            }
+        Get AI drink recommendation via OpenRouter.
         """
-        # Check if AI is available
-        if not self._ensure_initialized():
+        api_key = self._get_api_key()
+        if not api_key:
             return self._fallback_response(user_message, lang)
 
         try:
             system_prompt = self._build_system_prompt(lang)
 
-            # Re-initialize model with system instruction
-            model = genai.GenerativeModel(
-                'gemini-2.0-flash',
-                system_instruction=system_prompt,
-                generation_config=genai.GenerationConfig(
-                    response_mime_type="application/json",
-                    response_schema={
-                        "type": "object",
-                        "properties": {
-                            "reply": {"type": "string"},
-                            "recommended_items": {
-                                "type": "array",
-                                "items": {"type": "integer"}
-                            }
-                        },
-                        "required": ["reply", "recommended_items"]
-                    }
-                )
-            )
-
-            # Build conversation history
-            messages = []
+            messages = [{"role": "system", "content": system_prompt}]
+            
             if conversation_history:
                 for msg in conversation_history[-6:]:  # Last 6 messages
-                    role = 'user' if msg['sender'] == 'user' else 'model'
-                    messages.append({'role': role, 'parts': [msg['message']]})
+                    role = 'user' if msg['sender'] == 'user' else 'assistant'
+                    messages.append({'role': role, 'content': msg['message']})
 
-            # Add current message
-            messages.append({'role': 'user', 'parts': [user_message]})
+            messages.append({'role': 'user', 'content': user_message})
 
-            # Generate response
-            response = model.generate_content(messages)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://nodus-cafe.local", 
+                "X-Title": "Nodus Cafe AI"
+            }
+            
+            data = {
+                "model": "google/gemini-2.0-flash-001",
+                "messages": messages
+            }
+
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers=headers,
+                json=data,
+                timeout=15
+            )
+            response.raise_for_status()
+            
+            result_json = response.json()
+            content = result_json['choices'][0]['message']['content']
+            
+            # Clean possible markdown block
+            content = content.strip()
+            if content.startswith('```json'):
+                content = content[7:]
+            if content.startswith('```'):
+                content = content[3:]
+            if content.endswith('```'):
+                content = content[:-3]
+            content = content.strip()
             
             try:
-                data = json.loads(response.text)
-                clean_response = data.get('reply', '')
-                recommended_ids = data.get('recommended_items', [])
+                parsed_data = json.loads(content)
+                clean_response = parsed_data.get('reply', '')
+                recommended_ids = parsed_data.get('recommended_items', [])
             except json.JSONDecodeError:
-                clean_response = response.text
+                clean_response = content
                 recommended_ids = []
 
             return {

@@ -339,3 +339,108 @@ function debounce(func, wait) {
         timeout = setTimeout(() => func.apply(this, args), wait);
     };
 }
+
+// Menu Items Logic
+window.openNewItemModal = function() {
+    document.getElementById('itemId').value = '';
+    document.getElementById('itemNameEn').value = '';
+    document.getElementById('itemNameHi').value = '';
+    document.getElementById('itemPrice').value = '';
+    document.getElementById('itemDescEn').value = '';
+    document.getElementById('itemAvailable').checked = true;
+    document.getElementById('itemModalTitle').textContent = 'Add Menu Item';
+    document.getElementById('itemModal').style.display = 'flex';
+};
+
+window.editItemModal = function(id, data) {
+    document.getElementById('itemId').value = id;
+    document.getElementById('itemNameEn').value = data.name_en || '';
+    document.getElementById('itemNameHi').value = data.name_hi || '';
+    document.getElementById('itemCategory').value = data.category_id || '';
+    document.getElementById('itemPrice').value = data.price || '';
+    document.getElementById('itemDescEn').value = data.description_en || '';
+    document.getElementById('itemAvailable').checked = data.is_available;
+    document.getElementById('itemModalTitle').textContent = 'Edit Menu Item';
+    document.getElementById('itemModal').style.display = 'flex';
+};
+
+window.deleteMenuItem = async function(id) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    try {
+        await fetch(`/api/menu/items/${id}`, { method: 'DELETE' });
+        location.reload();
+    } catch (e) {
+        console.error('Failed to delete item', e);
+    }
+};
+
+document.getElementById('itemForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('itemId').value;
+    const isEdit = !!id;
+    const url = isEdit ? `/api/menu/items/${id}` : '/api/menu/items';
+    const method = isEdit ? 'PATCH' : 'POST';
+
+    const payload = {
+        name_en: document.getElementById('itemNameEn').value,
+        name_hi: document.getElementById('itemNameHi').value,
+        category_id: parseInt(document.getElementById('itemCategory').value),
+        price: parseFloat(document.getElementById('itemPrice').value),
+        description_en: document.getElementById('itemDescEn').value,
+        is_available: document.getElementById('itemAvailable').checked
+    };
+
+    try {
+        const res = await fetch(url, {
+            method: method,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            location.reload();
+        } else {
+            const data = await res.json();
+            alert('Error: ' + (data.error || 'Failed to save item'));
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Network error.');
+    }
+});
+
+// New Booking Logic
+window.openNewBookingModal = function() {
+    document.getElementById('bkCustomer').value = '';
+    // Set default date to today
+    document.getElementById('bkDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('bkTimeSlot').value = '12:00-13:00';
+    document.getElementById('bkGuests').value = 2;
+    document.getElementById('bookingModal').style.display = 'flex';
+};
+
+document.getElementById('newBookingForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {
+        customer_name: document.getElementById('bkCustomer').value,
+        date: document.getElementById('bkDate').value,
+        time_slot: document.getElementById('bkTimeSlot').value,
+        guest_count: parseInt(document.getElementById('bkGuests').value)
+    };
+
+    try {
+        const res = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to create booking'));
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Network error.');
+    }
+});

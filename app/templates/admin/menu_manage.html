@@ -25,9 +25,80 @@
                 </tr>
             </thead>
             <tbody id="menuItemsList">
-                <tr><td colspan="6" class="text-center text-muted">Loading items...</td></tr>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        {% if item.image_path %}
+                        <img src="{{ url_for('static', filename=item.image_path) }}" alt="{{ item.name_en }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                        {% else %}
+                        <div style="width: 40px; height: 40px; background: var(--bg-tertiary); border-radius: 4px; display: flex; align-items: center; justify-content: center;">☕</div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <strong>{{ item.name_en }}</strong><br>
+                        <small class="text-muted">{{ item.name_hi }}</small>
+                    </td>
+                    <td>{{ item.category.name_en if item.category else 'Uncategorized' }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>
+                        {% if item.is_available %}
+                        <span style="color: var(--success);">Available</span>
+                        {% else %}
+                        <span style="color: var(--error);">Unavailable</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm" onclick='editItemModal({{ item.id }}, {{ item.to_dict() | tojson | safe }})'>Edit</button>
+                        <button class="btn btn-secondary btn-sm" onclick='deleteMenuItem({{ item.id }})' style="background: var(--error);">Delete</button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" class="text-center text-muted">No menu items found.</td></tr>
+                {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Add/Edit Item Modal -->
+<div id="itemModal" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; align-items:center; justify-content:center;">
+    <div class="card p-4" style="width: 500px; max-width: 90%; max-height: 90vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <h3 id="itemModalTitle">Add Menu Item</h3>
+            <button onclick="document.getElementById('itemModal').style.display='none'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+        </div>
+        <form id="itemForm">
+            <input type="hidden" id="itemId">
+            <div class="form-group">
+                <label>Name (English)</label>
+                <input type="text" id="itemNameEn" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Name (Hindi)</label>
+                <input type="text" id="itemNameHi" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="itemCategory" class="form-control" required>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}">{{ cat.name_en }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Price (₹)</label>
+                <input type="number" step="0.01" id="itemPrice" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Description (English)</label>
+                <textarea id="itemDescEn" class="form-control"></textarea>
+            </div>
+            <div class="form-group" style="display:flex; align-items:center; gap: 10px;">
+                <input type="checkbox" id="itemAvailable" checked>
+                <label style="margin:0;">Is Available</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-2">Save Item</button>
+        </form>
     </div>
 </div>
 {% endblock %}

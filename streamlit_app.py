@@ -5,13 +5,14 @@ import time
 import requests
 import re
 import os
+import sys
 
 st.set_page_config(page_title="Nodus Cafe", layout="wide")
 
 @st.cache_resource
 def start_server_and_tunnel():
     # Start Flask server
-    flask_process = subprocess.Popen(["python", "run.py"])
+    flask_process = subprocess.Popen([sys.executable, "run.py"])
     
     # Wait for Flask to start
     time.sleep(3)

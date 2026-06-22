@@ -16,7 +16,7 @@
                 <option value="no_show">No Show</option>
             </select>
         </div>
-        <button class="btn btn-primary">+ New Booking</button>
+        <button class="btn btn-primary" onclick="openNewBookingModal()">+ New Booking</button>
     </div>
 
     <table class="table" id="bookingsTable">
@@ -35,5 +35,49 @@
             <tr><td colspan="6" class="text-center text-muted">Loading bookings...</td></tr>
         </tbody>
     </table>
+</div>
+
+<!-- New Booking Modal -->
+<div id="bookingModal" class="modal hidden" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; align-items:center; justify-content:center;">
+    <div class="card p-4" style="width: 500px; max-width: 90%;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <h3>Create Booking</h3>
+            <button onclick="document.getElementById('bookingModal').style.display='none'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+        </div>
+        <form id="newBookingForm">
+            <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" id="bkCustomer" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="bkDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Time Slot</label>
+                <select id="bkTimeSlot" class="form-control" required>
+                    <option value="08:00-09:00">08:00 - 09:00</option>
+                    <option value="09:00-10:00">09:00 - 10:00</option>
+                    <option value="10:00-11:00">10:00 - 11:00</option>
+                    <option value="11:00-12:00">11:00 - 12:00</option>
+                    <option value="12:00-13:00">12:00 - 13:00</option>
+                    <option value="13:00-14:00">13:00 - 14:00</option>
+                    <option value="14:00-15:00">14:00 - 15:00</option>
+                    <option value="15:00-16:00">15:00 - 16:00</option>
+                    <option value="16:00-17:00">16:00 - 17:00</option>
+                    <option value="17:00-18:00">17:00 - 18:00</option>
+                    <option value="18:00-19:00">18:00 - 19:00</option>
+                    <option value="19:00-20:00">19:00 - 20:00</option>
+                    <option value="20:00-21:00">20:00 - 21:00</option>
+                    <option value="21:00-22:00">21:00 - 22:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Guests</label>
+                <input type="number" id="bkGuests" class="form-control" min="1" max="20" value="2" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

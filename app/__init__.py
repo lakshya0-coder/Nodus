@@ -68,7 +68,7 @@ def create_app(config_class=Config):
         app.register_blueprint(menu_bp)
         app.register_blueprint(booking_bp)
         app.register_blueprint(auth_bp)
-        app.register_blueprint(admin_bp)
+        app.register_blueprint(admin_bp, url_prefix='/admin')
         
         app.register_blueprint(api_ai_bp, url_prefix='/api/ai')
         app.register_blueprint(api_bookings_bp, url_prefix='/api/bookings')

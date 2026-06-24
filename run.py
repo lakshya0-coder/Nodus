@@ -3,6 +3,8 @@ Nodus Cafe — Application Entry Point
 Run: python run.py
 """
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from app import create_app
 from app.services.ai_assistant import ai_assistant
 from app.services.ml_predictor import demand_predictor

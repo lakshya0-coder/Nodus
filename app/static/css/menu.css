@@ -93,3 +93,30 @@
 .hidden {
     display: none !important;
 }
+
+/* Responsive Menu */
+@media (max-width: 768px) {
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    .item-img-placeholder {
+        width: 65px;
+        height: 65px;
+    }
+    .item-name {
+        font-size: 1rem;
+    }
+    .item-desc {
+        font-size: 0.85rem;
+    }
+    .menu-item-card {
+        gap: 1rem;
+        padding: 0.8rem;
+    }
+}

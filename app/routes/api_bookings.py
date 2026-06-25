@@ -67,7 +67,7 @@ def create_booking():
         date=booking_date,
         time_slot=data['time_slot'],
         status='confirmed'
-    ).with_for_update().scalar() or 0
+    ).scalar() or 0
     
     guest_count = data.get('guest_count', 1)
 

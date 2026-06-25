@@ -17,13 +17,6 @@ python run.py
 
 The app will be available at **http://localhost:5000**
 
-## Default Credentials
-
-| Role | Username | Password |
-|------|----------|----------|
-| Admin/Developer | `admin` | `admin123` |
-| Staff | `staff1` | `staff123` |
-
 ## Features
 
 ### Public Website
